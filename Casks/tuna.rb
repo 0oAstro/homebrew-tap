@@ -4,13 +4,26 @@ cask "tuna" do
 
   url "https://tunaformac.com/download/latest"
   name "Tuna"
-  desc "Music control and Now Playing for Mac"
+  desc "Modern, native macOS launcher built on the ideas of Quicksilver"
   homepage "https://tunaformac.com/"
+
+  depends_on macos: ">= :sequoia"
+
+  auto_updates true
+
+  uninstall quit:       "com.brnbw.Tuna",
+            login_item: "Tuna"
 
   app "Tuna.app"
 
   zap trash: [
-    "~/Library/Preferences/com.charliemonroe.Tuna.plist",
+    "~/Library/Application Support/com.brnbw.Tuna",
     "~/Library/Application Support/Tuna",
+    "~/Library/Caches/com.brnbw.Tuna",
+    "~/Library/Cookies/com.brnbw.Tuna.binarycookies",
+    "~/Library/HTTPStorages/com.brnbw.Tuna",
+    "~/Library/Preferences/com.brnbw.Tuna.plist",
+    "~/Library/Saved Application State/com.brnbw.Tuna.savedState",
+    "~/Library/WebKit/com.brnbw.Tuna",
   ]
 end
