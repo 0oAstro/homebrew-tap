@@ -17,13 +17,10 @@ cask "tuna" do
   app "Tuna.app"
 
   zap trash: [
-    "~/Library/Application Support/com.brnbw.Tuna",
     "~/Library/Application Support/Tuna",
     "~/Library/Caches/com.brnbw.Tuna",
-    "~/Library/Cookies/com.brnbw.Tuna.binarycookies",
+    "~/Library/Caches/SentryCrash/Tuna",
     "~/Library/HTTPStorages/com.brnbw.Tuna",
     "~/Library/Preferences/com.brnbw.Tuna.plist",
-    "~/Library/Saved Application State/com.brnbw.Tuna.savedState",
-    "~/Library/WebKit/com.brnbw.Tuna",
   ]
 end
