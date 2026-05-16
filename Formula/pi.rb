@@ -6,6 +6,7 @@ class Pi < Formula
   license "MIT"
 
   depends_on "bun" => :build
+  depends_on "node"
 
   def install
     # Install npm dependencies
