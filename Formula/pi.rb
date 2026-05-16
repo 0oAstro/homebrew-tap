@@ -9,8 +9,9 @@ class Pi < Formula
   depends_on "node"
 
   def install
-    # Install npm dependencies
-    system "npm", "install", "--production", "--ignore-scripts"
+    # Install npm dependencies using Homebrew's cache to avoid permission issues
+    system "npm", "install", "--production", "--ignore-scripts",
+           "--cache=#{HOMEBREW_CACHE}/npm_cache"
 
     # Build the standalone binary with Bun
     system "bun", "build", "--compile",
