@@ -18,11 +18,9 @@ class Pi < Formula
            "./dist/bun/cli.js",
            "--outfile", "pi"
 
-    # Install binary into libexec
-    libexec_bin = libexec/"bin"
-    libexec_bin.install "pi"
-
-    # Install runtime assets alongside the binary
+    # Install binary and all runtime assets into libexec
+    # (the binary looks for assets relative to its own location)
+    libexec.install "pi"
     libexec.install "package.json"
 
     # Themes
@@ -42,7 +40,7 @@ class Pi < Formula
     libexec.install wasm if wasm
 
     # Symlink the binary into bin
-    bin.install_symlink libexec_bin/"pi"
+    bin.install_symlink libexec/"pi"
   end
 
   test do
