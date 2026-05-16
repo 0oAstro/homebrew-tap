@@ -8,41 +8,42 @@ class Pi < Formula
   depends_on "bun" => :build
 
   def install
-    # Install npm dependencies (production only, skip scripts that need the monorepo)
-    system "npm", "install", "--production", "--ignore-scripts"
-    # Some native deps need their install scripts run them explicitly
-    system "npm", "rebuild", "--ignore-scripts=@silvia-odwyer/photon-node"
+    # npm tarball extracts into a package/ subdirectory
+    cd "package" do
+      # Install npm dependencies
+      system "npm", "install", "--production", "--ignore-scripts"
 
-    # Build the standalone binary with Bun
-    system "bun", "build", "--compile",
-           "./dist/bun/cli.js",
-           "--outfile", "pi"
+      # Build the standalone binary with Bun
+      system "bun", "build", "--compile",
+             "./dist/bun/cli.js",
+             "--outfile", "pi"
 
-    # Install binary into libexec
-    libexec_bin = libexec/"bin"
-    libexec_bin.install "pi"
+      # Install binary into libexec
+      libexec_bin = libexec/"bin"
+      libexec_bin.install "pi"
 
-    # Install runtime assets alongside the binary
-    libexec.install "package.json"
+      # Install runtime assets alongside the binary
+      libexec.install "package.json"
 
-    # Themes
-    (libexec/"theme").mkpath
-    (libexec/"theme").install Dir["dist/modes/interactive/theme/*.json"]
+      # Themes
+      (libexec/"theme").mkpath
+      (libexec/"theme").install Dir["dist/modes/interactive/theme/*.json"]
 
-    # Interactive assets (branding PNGs)
-    (libexec/"assets").mkpath
-    (libexec/"assets").install Dir["dist/modes/interactive/assets/*.png"]
+      # Interactive assets (branding PNGs)
+      (libexec/"assets").mkpath
+      (libexec/"assets").install Dir["dist/modes/interactive/assets/*.png"]
 
-    # Export-HTML templates
-    (libexec/"export-html").mkpath
-    (libexec/"export-html").install Dir["dist/core/export-html/*"]
+      # Export-HTML templates
+      (libexec/"export-html").mkpath
+      (libexec/"export-html").install Dir["dist/core/export-html/*"]
 
-    # Photon WASM needed by @silvia-odwyer/photon-node at runtime
-    wasm = Dir["node_modules/@silvia-odwyer/photon-node/photon_rs_bg.wasm"].first
-    libexec.install wasm if wasm
+      # Photon WASM - needed by @silvia-odwyer/photon-node at runtime
+      wasm = Dir["node_modules/@silvia-odwyer/photon-node/photon_rs_bg.wasm"].first
+      libexec.install wasm if wasm
 
-    # Symlink the binary into bin
-    bin.install_symlink libexec_bin/"pi"
+      # Symlink the binary into bin
+      bin.install_symlink libexec_bin/"pi"
+    end
   end
 
   test do
